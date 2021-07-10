@@ -1,4 +1,4 @@
-package com.musala.ahmedTest.practicalTask.modelAssembler;
+package com.musala.ahmedTest.practicalTask.modelAssemblers;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;

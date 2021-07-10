@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.musala.ahmedTest.practicalTask.exceptions.NotAllowedDataException;
 import com.musala.ahmedTest.practicalTask.exceptions.NotFoundException;
-import com.musala.ahmedTest.practicalTask.modelAssembler.GatewayModelAssembler;
+import com.musala.ahmedTest.practicalTask.modelAssemblers.GatewayModelAssembler;
 import com.musala.ahmedTest.practicalTask.models.Gateway;
 import com.musala.ahmedTest.practicalTask.models.PeripheralDevice;
 import com.musala.ahmedTest.practicalTask.services.IGatewayService;
