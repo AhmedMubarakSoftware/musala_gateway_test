@@ -38,31 +38,67 @@ To run open a console and execute run_backend.bat
 
 Endpoints:
 --------------------------------------------------------------------
---------------------------------------------------------------------
-Create a gateway:
---------------------------------------------------------------------
-POST http://localhost:8080/gateways
-body: {
-"serial": "string", //a unique serial number ex: AbC123
-"name": "string", //a human-readable name ex: Gateway A
-"ip": "string" //an IPv4 address ex: 10.0.0.1
-}
-
-Delete a gateway:
-DELETE http://localhost:8080/gateways/{serial} // ex: http://localhost:8080/gateways/AbC123
 
 Get all stored gateways:
-GET http://localhost:8080/gateways
+--------------------------------------------------------------------
+GET http://localhost:8081/api/v1/gateways
+
+Create a gateway:
+--------------------------------------------------------------------
+POST http://localhost:8081/api/v1/gateways
+
+body: {
+
+"serialNum": "string", //a unique serial number ex: AbC123
+
+"name": "string", //a human-readable name ex: Gateway A
+
+"ipAddress": "string" //an IPv4 address ex: 10.0.0.1
+"peripheralDevices": [{"vendor": "ahmed","status": "online"}] // optional list of devices (can be null )
+}
+
+update a gateway by it's id with another gateway
+--------------------------------------------------------------------
+Put http://localhost:8081/api/v1/gateways/{id}
+// ex: http://localhost:8081/api/v1/gateways/AbC123
+//and body: {
+
+"serialNum": "string", //a unique serial number ex: AbC123
+
+"name": "string", //a human-readable name ex: Gateway A
+
+"ipAddress": "string" //an IPv4 address ex: 10.0.0.1
+"peripheralDevices": [{"vendor": "ahmed","status": "online"}] // optional list of devices (can be null )
+}
+
+
+Delete a gateway:
+--------------------------------------------------------------------
+DELETE http://localhost:8081/api/v1/gateways/{serial}
+// ex: http://localhost:8081/api/v1/gateways/AbC123
 
 Get a single gateway:
-GET http://localhost:8080/gateways/{serial} // ex: http://localhost:8080/gateways/AbC123
+--------------------------------------------------------------------
+GET http://localhost:8081/api/v1/gateways/{serial} 
+
+// ex: http://localhost:8081/api/v1/gateways/AbC123
 
 Add a device from a gateway
-POST http://localhost:8080/gateways/{serial}/device
+--------------------------------------------------------------------
+
+POST http://localhost:8081/api/v1/gateways/{serial}/addDevice
+
 body: {
+
 "vendor": "string", // ex: Vendor A
+
 "status": "online|offline" // ex: online
+
 }
 
 Remove a device from a gateway
-DELETE http://localhost:8080/gateways/{serial}/device/{device_uid} // ex: http://localhost:8080/gateways/AbC123/device/1
+--------------------------------------------------------------------
+
+DELETE http://localhost:8081/api/v1/gateways/{serial}/deleteDevice/{uid} 
+
+// ex: http://localhost:8081/api/v1/gateways/AbC123/deleteDevice/1
