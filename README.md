@@ -115,3 +115,9 @@ Remove a device from a gateway
 DELETE http://localhost:8081/api/v1/gateways/{serial}/deleteDevice/{uid} 
 
 // ex: http://localhost:8081/api/v1/gateways/AbC123/deleteDevice/1
+
+
+#4. Testing Data Using PostMan or from Swagger
+--------------------------------------------------------------------------
+- open the text file in path /files/testCases_for _gateway_apis.txt 
+ and see the attached test cases
