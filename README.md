@@ -62,13 +62,16 @@ body: {
 "name": "string", //a human-readable name ex: Gateway A
 
 "ipAddress": "string" //an IPv4 address ex: 10.0.0.1
+
 "peripheralDevices": [{"vendor": "ahmed","status": "online"}] // optional list of devices (can be null )
 }
 
 update a gateway by it's id with another gateway
 --------------------------------------------------------------------
 Put http://localhost:8081/api/v1/gateways/{id}
+
 // ex: http://localhost:8081/api/v1/gateways/AbC123
+
 //and body: {
 
 "serialNum": "string", //a unique serial number ex: AbC123
@@ -76,6 +79,7 @@ Put http://localhost:8081/api/v1/gateways/{id}
 "name": "string", //a human-readable name ex: Gateway A
 
 "ipAddress": "string" //an IPv4 address ex: 10.0.0.1
+
 "peripheralDevices": [{"vendor": "ahmed","status": "online"}] // optional list of devices (can be null )
 }
 
@@ -83,6 +87,7 @@ Put http://localhost:8081/api/v1/gateways/{id}
 Delete a gateway:
 --------------------------------------------------------------------
 DELETE http://localhost:8081/api/v1/gateways/{serial}
+
 // ex: http://localhost:8081/api/v1/gateways/AbC123
 
 Get a single gateway:
