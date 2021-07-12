@@ -13,31 +13,39 @@ Programming language: Java
 
 Framework: Spring Boot
 
+Additional tools and Libs : Swagger tools , Lombok Lib
+
 Database: MySQL
 
 Automated build: Apache Maven
 
-UI:  Angular
+UI:  Angular ( Not complete)
 
-Database Script
+Steps for working 
 --------------------------------------------------------------------
-to create the database and it's tables run musala_db.sql in the MySql db editor .
-
-to build and run from linux
+#1.DataBase Creation 
 --------------------------------------------------------------------
+1.1. create the database and it's tables run the commands in the /files/musala_db.sql in the MySql db editor .
 
-To build open a terminal and execute ./build_backend_linux.sh
-
-To run open a terminal and execute ./run_backend_linux.sh
-
-to build and run from windows
+#2.Building and Running
 --------------------------------------------------------------------
-To build open a console and execute build_backend.bat
+2.1. build and run from linux
 
-To run open a console and execute run_backend.bat
+ - build open a terminal and execute ./build_backend_linux.sh
 
-Endpoints:
+ - run open a terminal and execute ./run_backend_linux.sh
+
+2.2. build and run from windows
+
+- build open a console and execute build_backend.bat
+
+- run open a console and execute run_backend.bat
+
+#3. Viewing and interacting with All EndPoints 
 --------------------------------------------------------------------
+- open the browser and type http://localhost:8081/swagger-ui.html#/
+
+- navigate throw all Endpoints in the gatewayController like :
 
 Get all stored gateways:
 --------------------------------------------------------------------
