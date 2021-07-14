@@ -17,12 +17,11 @@ public class GatewayModelAssembler implements RepresentationModelAssembler<Gatew
 	public EntityModel<Gateway> toModel(Gateway gateway) {
 
 		// basic links for each model
-		return EntityModel
-				.of(gateway, linkTo(methodOn(GatewayController.class).getOneById(gateway.getSerialNum())).withSelfRel(),
-						linkTo(methodOn(GatewayController.class).deleteGateway(gateway.getSerialNum()))
-								.withRel("deleteGateway"),
-						linkTo(methodOn(GatewayController.class).getAll()).withRel("gateways"));
-		//may add other links
+		return EntityModel.of(gateway,
+				linkTo(methodOn(GatewayController.class).findById(gateway.getSerialNum())).withSelfRel(),
+				linkTo(methodOn(GatewayController.class).delete(gateway.getSerialNum())).withRel("deleteGateway"),
+				linkTo(methodOn(GatewayController.class).All()).withRel("gateways"));
+		// may add other links
 //    if (gateway.getPeripheralDevices().size() < 10) {
 //    	gatewayModel.add(linkTo(methodOn(GatewayController.class).addNewDevice(gateway.getSerialNum())).withRel("addNewDevice"));
 //	}

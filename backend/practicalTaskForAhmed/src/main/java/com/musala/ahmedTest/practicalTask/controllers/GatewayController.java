@@ -3,9 +3,10 @@ package com.musala.ahmedTest.practicalTask.controllers;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -21,11 +22,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.musala.ahmedTest.practicalTask.dtos.GatewayDTO;
+import com.musala.ahmedTest.practicalTask.dtos.PeripheralDeviceDTO;
 import com.musala.ahmedTest.practicalTask.exceptions.NotAllowedDataException;
 import com.musala.ahmedTest.practicalTask.exceptions.NotFoundException;
 import com.musala.ahmedTest.practicalTask.modelAssemblers.GatewayModelAssembler;
 import com.musala.ahmedTest.practicalTask.models.Gateway;
-import com.musala.ahmedTest.practicalTask.models.PeripheralDevice;
 import com.musala.ahmedTest.practicalTask.services.IGatewayService;
 
 @RestController
@@ -41,63 +43,68 @@ public class GatewayController {
 
 	// Get all Gateways
 	@GetMapping
-	public CollectionModel<EntityModel<Gateway>> getAll() {
+	public CollectionModel<EntityModel<Gateway>> All() {
 		List<EntityModel<Gateway>> gateways = gatewayService.findAll().stream().map(assembler::toModel)
 				.collect(Collectors.toList());
 
-		return CollectionModel.of(gateways, linkTo(methodOn(GatewayController.class).getAll()).withSelfRel());
+		return CollectionModel.of(gateways, linkTo(methodOn(GatewayController.class).All()).withSelfRel());
 	}
 
 	// Create new Gateway
 	@PostMapping
-	public ResponseEntity<EntityModel<Gateway>> newGateway(@RequestBody Gateway gateway)
+	public ResponseEntity<EntityModel<Gateway>> create(@RequestBody @Valid GatewayDTO gatewayDTO)
 			throws NotAllowedDataException {
 
-		Gateway newGateway = gatewayService.addNewGateway(gateway);
+		Gateway gateway = gatewayService.addGateway(gatewayDTO);
 		return ResponseEntity
-				.created(linkTo(methodOn(GatewayController.class).getOneById(newGateway.getSerialNum())).toUri())
-				.body(assembler.toModel(newGateway));
+				.created(linkTo(methodOn(GatewayController.class).findById(gateway.getSerialNum())).toUri())
+				.body(assembler.toModel(gateway));
 	}
-	
-	//update a gateway by it's id with another gateway
-	 @PutMapping("/{id}")
-	 public EntityModel<Gateway> replaceGateway(@RequestBody Gateway gateway, @PathVariable String serial) throws NotAllowedDataException {
-			
-		 return assembler.toModel(gatewayService.replaceGateway(gateway,serial));
-	  }
-	
+
+	// update a gateway by it's id with another gateway
+	@PutMapping("/{serial}")
+	public EntityModel<Gateway> update(@RequestBody GatewayDTO gatewayDTO, @PathVariable String serial)
+			throws NotAllowedDataException {
+
+		return assembler.toModel(gatewayService.update(gatewayDTO, serial));
+	}
+
 	// Get one Gateway By Id
 	@GetMapping("/{serial}")
-	public EntityModel<Gateway> getOneById(@PathVariable String serial) {
+	public EntityModel<Gateway> findById(@PathVariable String serial) {
 
 		return assembler.toModel(gatewayService.findById(serial));
 	}
 
 	// Add a Peripheral device to the Gateway
 	@PostMapping("/{serial}/addDevice")
-	public ResponseEntity<EntityModel<Gateway>> addNewDevice(@RequestBody PeripheralDevice newDevice,
+	public ResponseEntity<EntityModel<Gateway>> addDevice(@RequestBody PeripheralDeviceDTO perDeviceDTO,
 			@PathVariable String serial) throws NotAllowedDataException, NotFoundException {
-		Gateway newGateway = gatewayService.addNewDevice(newDevice, serial);
+		Gateway newGateway = gatewayService.addDevice(perDeviceDTO, serial);
 		return ResponseEntity
-				.created(linkTo(methodOn(GatewayController.class).getOneById(newGateway.getSerialNum())).toUri())
+				.created(linkTo(methodOn(GatewayController.class).findById(newGateway.getSerialNum())).toUri())
 				.body(assembler.toModel(newGateway));
 	}
 
 	// Delete a gateway with it's serial
 	@DeleteMapping("/{serial}")
-	public ResponseEntity<?> deleteGateway(@PathVariable String serial) {
-		
+	public ResponseEntity<?> delete(@PathVariable String serial) {
+
 		gatewayService.deleteById(serial);
-		return ResponseEntity.ok().build();
+//		return ResponseEntity.ok().build();
+		return ResponseEntity.noContent().build();
+
 	}
+
 //
 	// Delete a device From a Gateway
 	@DeleteMapping("/{serial}/deleteDevice/{uid}")
-	public ResponseEntity<?> deleteDeviceFromGateway(@PathVariable String serial, @PathVariable Integer uid) {
-		
+	public ResponseEntity<?> deleteDevice(@PathVariable String serial, @PathVariable Integer uid) {
+
 		gatewayService.deleteDeviceFromGatewayById(serial, uid);
-		return ResponseEntity.ok().build();
-	
+//		return ResponseEntity.ok().build();
+		return ResponseEntity.noContent().build();
+
 	}
 
 }
