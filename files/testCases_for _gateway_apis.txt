@@ -1,0 +1,155 @@
+		This test cases is done by using swagger Api 
+
+		1- newGateway
+		  -------------
+		  -------------
+		  curl -X POST "http://localhost:8081/api/v1/gateways" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"ipAddress\": \"23.2.3.6\", \"name\": \"gateway-1\", \"peripheralDevices\": [ { \"status\": \"online\", \"vendor\": \"cisco\" } ], \"serialNum\": \"cs123\"}"
+			test1-
+				with body 
+					{
+					  "ipAddress": "23.2.3.6",
+					  "name": "gateway-1",
+					  "peripheralDevices": [
+						{
+						  "status": "online",
+						  "vendor": "cisco"
+						}
+					  ],
+					  "serialNum": "cs123"
+					}
+					--------------------------
+				response
+				{
+				  "serialNum": "cs123",
+				  "name": "gateway-1",
+				  "ipAddress": "23.2.3.6",
+				  "peripheralDevices": [
+					{
+					  "uid": 1,
+					  "vendor": "cisco",
+					  "creationDate": [
+						2021,
+						7,
+						12,
+						15,
+						36,
+						52,
+						676977700
+					  ],
+					  "status": "online"
+					}
+				  ],
+				  "links": [
+					{
+					  "rel": "self",
+					  "href": "http://localhost:8081/api/v1/gateways/cs123"
+					},
+					{
+					  "rel": "deleteGateway",
+					  "href": "http://localhost:8081/api/v1/gateways/cs123"
+					},
+					{
+					  "rel": "gateways",
+					  "href": "http://localhost:8081/api/v1/gateways"
+					}
+				  ]
+				}
+				---------------------------------------------------------------------------------------
+			test2-
+			curl -X POST "http://localhost:8081/api/v1/gateways" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"ipAddress\": \"259.2.3.6\", \"name\": \"gateway-2\", \"peripheralDevices\": [ { \"status\": \"online\", \"vendor\": \"cisco\" } ], \"serialNum\": \"cs123\"}"
+				with body 
+					{
+				  "ipAddress": "259.2.3.6",
+				  "name": "gateway-2",
+				  "peripheralDevices": [
+					{
+					  "status": "online",
+					  "vendor": "cisco"
+					}
+				  ],
+				  "serialNum": "cs123"
+				}
+			-----------------------------
+			response
+			
+			Invalid IP V4 Address: 259.2.3.6
+	------------------------------------------------------------------------------------------------------
+	test3-
+	curl -X POST "http://localhost:8081/api/v1/gateways" -H "accept: */*" -H "Content-Type: application/json" -d "{\t\t\t\t \"ipAddress\": \"23.2.3.6\",\t\t\t\t \"name\": \"gateway-1\",\t\t\t\t \"peripheralDevices\": [\t\t\t\t\t{\t\t\t\t\t \"status\": \"online\",\t\t\t\t\t \"vendor\": \"cisco\"\t\t\t\t\t}\t\t\t\t ],\t\t\t\t \"serialNum\": \"cs123\"\t\t\t\t}"
+				
+				with body 
+	{
+					  "ipAddress": "23.2.3.6",
+					  "name": "gateway-1",
+					  "peripheralDevices": [
+						{
+						  "status": "online",
+						  "vendor": "cisco"
+						}
+					  ],
+					  "serialNum": "cs123"
+					}
+	-----------------------------
+			response
+			
+	 This value  is used before for serial number : cs123
+
+			---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+				2-getOneById
+				-------------
+				-------------
+
+				curl -X GET "http://localhost:8081/api/v1/gateways/cs123" -H "accept: */*"
+				------------------------------------------------
+				response
+
+				{
+				  "serialNum": "cs123",
+				  "name": "gateway-1",
+				  "ipAddress": "23.2.3.6",
+				  "peripheralDevices": [
+					{
+					  "uid": 1,
+					  "vendor": "cisco",
+					  "creationDate": [
+						2021,
+						7,
+						12,
+						15,
+						36,
+						52
+					  ],
+					  "status": "online"
+					}
+				  ],
+				  "links": [
+					{
+					  "rel": "self",
+					  "href": "http://localhost:8081/api/v1/gateways/cs123"
+					},
+					{
+					  "rel": "deleteGateway",
+					  "href": "http://localhost:8081/api/v1/gateways/cs123"
+					},
+					{
+					  "rel": "gateways",
+					  "href": "http://localhost:8081/api/v1/gateways"
+					}
+				  ]
+				}
+		------------------------------------------------------------------------------------------------------
+
+
+		test2-
+		curl -X GET "http://localhost:8081/api/v1/gateways/cs124" -H "accept: */*"
+	---------------------------------------------------------------
+		response
+
+		Couldn't find a gateway with serial :cs124
+		------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+		GET
+		/api/v1/gateways
+		getAll
