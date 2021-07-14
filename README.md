@@ -5,7 +5,9 @@ a project for managing gateways - master devices that control multiple periphera
 
 Consist from 
 --------------------------------------------------------------------
-an angular + REST service (JSON/HTTP) for storing information about gateways and their associated devices.
+1-a REST service (JSON/HTTP) for storing information about gateways and their associated devices.
+2- a web application based on the first rest project as dependency and  Swagger (used for display all APIs and Models and can run any Endpoint (ApI) )
+   and have the APIs test 
 
 Technologies and framworks Used :
 --------------------------------------------------------------------
@@ -13,7 +15,7 @@ Programming language: Java
 
 Framework: Spring Boot
 
-Additional tools and Libs : Swagger tools , Lombok Lib
+Additional tools and Libs : Swagger tools , Lombok Lib , Model Mapper , Design pattern , DTO validation ..
 
 Database: MySQL
 
@@ -43,17 +45,17 @@ Steps for working
 
 #3. Viewing and interacting with All EndPoints 
 --------------------------------------------------------------------
-- open the browser and type http://localhost:8081/swagger-ui.html#/
+- open the browser and type http://localhost:8082/swagger-ui.html#/
 
 - navigate throw all Endpoints in the gatewayController like :
 
 Get all stored gateways:
 --------------------------------------------------------------------
-GET http://localhost:8081/api/v1/gateways
+GET http://localhost:8082/api/v1/gateways
 
 Create a gateway:
 --------------------------------------------------------------------
-POST http://localhost:8081/api/v1/gateways
+POST http://localhost:8082/api/v1/gateways
 
 body: {
 
@@ -68,9 +70,9 @@ body: {
 
 update a gateway by it's id with another gateway
 --------------------------------------------------------------------
-Put http://localhost:8081/api/v1/gateways/{id}
+Put http://localhost:8082/api/v1/gateways/{id}
 
-// ex: http://localhost:8081/api/v1/gateways/AbC123
+// ex: http://localhost:8082/api/v1/gateways/AbC123
 
 //and body: {
 
@@ -86,20 +88,20 @@ Put http://localhost:8081/api/v1/gateways/{id}
 
 Delete a gateway:
 --------------------------------------------------------------------
-DELETE http://localhost:8081/api/v1/gateways/{serial}
+DELETE http://localhost:8082/api/v1/gateways/{serial}
 
-// ex: http://localhost:8081/api/v1/gateways/AbC123
+// ex: http://localhost:8082/api/v1/gateways/AbC123
 
 Get a single gateway:
 --------------------------------------------------------------------
-GET http://localhost:8081/api/v1/gateways/{serial} 
+GET http://localhost:8082/api/v1/gateways/{serial} 
 
-// ex: http://localhost:8081/api/v1/gateways/AbC123
+// ex: http://localhost:8082/api/v1/gateways/AbC123
 
 Add a device from a gateway
 --------------------------------------------------------------------
 
-POST http://localhost:8081/api/v1/gateways/{serial}/addDevice
+POST http://localhost:8082/api/v1/gateways/{serial}/addDevice
 
 body: {
 
@@ -112,12 +114,12 @@ body: {
 Remove a device from a gateway
 --------------------------------------------------------------------
 
-DELETE http://localhost:8081/api/v1/gateways/{serial}/deleteDevice/{uid} 
+DELETE http://localhost:8082/api/v1/gateways/{serial}/deleteDevice/{uid} 
 
-// ex: http://localhost:8081/api/v1/gateways/AbC123/deleteDevice/1
+// ex: http://localhost:8082/api/v1/gateways/AbC123/deleteDevice/1
 
 
-#4. Testing Data Using PostMan or from Swagger
+#4. Testing Data Using  Swagger
 --------------------------------------------------------------------------
 - open the text file in path /files/testCases_for _gateway_apis.txt 
  and see the attached test cases
