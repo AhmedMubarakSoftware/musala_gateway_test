@@ -99,13 +99,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-<<<<<<< HEAD
 					<mainClass>com.musala.ahmedTest.practicalTask.PracticalTaskForAhmedTestingApplication</mainClass>
-=======
-
-					<mainClass>com.musala.ahmedTest.practicalTask.PracticalTaskForAhmedTestingApplication</mainClass>
-
->>>>>>> main1
 				</configuration>
 			</plugin>
 
