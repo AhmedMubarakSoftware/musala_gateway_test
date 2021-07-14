@@ -22,41 +22,36 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableSwagger2 //  main annotation to enable swagger support
-public class SwaggerConfig  extends WebMvcConfigurationSupport{
+@EnableSwagger2 // main annotation to enable swagger support
+public class SwaggerConfig extends WebMvcConfigurationSupport {
 
-    /**
-     *
-     * @return Docket
-     */
-    @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-            .select()
-            .apis(RequestHandlerSelectors.any())
-            .paths(PathSelectors.any())
-            .build().apiInfo(getApiInfo());
-    }
+	/**
+	 *
+	 * @return Docket
+	 */
+	@Bean
+	public Docket api() {
+		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
+				.paths(PathSelectors.any()).build().apiInfo(getApiInfo());
+	}
 
-    private ApiInfo getApiInfo() {
-        return new ApiInfo("Musala Practical test ",
-            " a practical test for Ahmed Mubarak",
-            "1.0", "urn:tos",
-            new Contact("Ahmed Mubarak", "https://www.musala.com/", "a.mubarak.cs@gmail.com"),
-            "Musala Soft", "https://www.musala.com/", Collections.emptyList());
-    
-    }
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
-    @Bean
-    public LinkDiscoverers discoverers() {
-        List<LinkDiscoverer> plugins = new ArrayList<>();
-        plugins.add(new CollectionJsonLinkDiscoverer());
-        return new LinkDiscoverers(SimplePluginRegistry.create(plugins));
-    }
+	private ApiInfo getApiInfo() {
+		return new ApiInfo("Musala Practical test ", " a practical test for Ahmed Mubarak", "1.0", "urn:tos",
+				new Contact("Ahmed Mubarak", "https://www.musala.com/", "a.mubarak.cs@gmail.com"), "Musala Soft",
+				"https://www.musala.com/", Collections.emptyList());
+
+	}
+
+	@Override
+	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+	}
+
+	@Bean
+	public LinkDiscoverers discoverers() {
+		List<LinkDiscoverer> plugins = new ArrayList<>();
+		plugins.add(new CollectionJsonLinkDiscoverer());
+		return new LinkDiscoverers(SimplePluginRegistry.create(plugins));
+	}
 }
