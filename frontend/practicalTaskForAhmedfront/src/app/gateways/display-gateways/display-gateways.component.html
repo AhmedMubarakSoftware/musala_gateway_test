@@ -1,0 +1,11 @@
+<p>display-gateways works!</p>
+<output for="serialNum" type="text" >Serial Number : </output>
+<input type="text" name="serialNum" >
+<output for="name" type="text" >Name : </output>
+<input type="text" name="name" >
+<output for="status" type="text" >Device Status : </output>
+<input type="text" name="status" >
+
+<button (click)='reloadData()' > get all gateways</button>
+<button (click)='getOneGateway("23")' > get one gateway</button>
+

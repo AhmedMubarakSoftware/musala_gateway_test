@@ -16,6 +16,7 @@
 	<description>Practical task for ahmed </description>
 	<properties>
 		<java.version>11</java.version>
+		<start-class>com.musala.ahmedTest.practicalTask.PracticalTaskForAhmedTestingApplication</start-class>
 	</properties>
 	<dependencies>
 		<dependency>
