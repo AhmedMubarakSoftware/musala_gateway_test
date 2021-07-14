@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "GATEWAY")
 @Data
 @Entity
+@Builder
 public class Gateway  {
 	 
     //a unique serial number (string)
@@ -35,7 +37,7 @@ public class Gateway  {
     private String ipAddress ;
 
     //multiple associated peripheral devices. 
-	  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gateway", orphanRemoval = true)
+	  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gateway", orphanRemoval = true)
 	  private List<PeripheralDevice> peripheralDevices ;
 
 	public Gateway addPeripheralDevice(PeripheralDevice peripheralDevice) {
@@ -94,37 +96,7 @@ public class Gateway  {
 		return result;
 	}
 	
-//	public String getSerialNum() {
-//		return serialNum;
-//	}
-//
-//	public void setSerialNum(String serialNum) {
-//		this.serialNum = serialNum;
-//	}
-//
-//	public String getName() {
-//		return name;
-//	}
-//
-//	public void setName(String name) {
-//		this.name = name;
-//	}
-//
-//	public String getIpAddress() {
-//		return ipAddress;
-//	}
-//
-//	public void setIpAddress(String ipAddress) {
-//		this.ipAddress = ipAddress;
-//	}
-//
-//	public List<PeripheralDevice> getPeripheralDevices() {
-//		return peripheralDevices;
-//	}
-//
-//	public void setPeripheralDevices(List<PeripheralDevice> peripheralDevices) {
-//		this.peripheralDevices = peripheralDevices;
-//	}
+
 	
 	
 }

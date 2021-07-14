@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class NotFoundControllerAdvice {
 
-    @ResponseBody
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String NotFoundControllerAdvice(NotFoundException ex) {
-        return ex.getMessage();
-    }
+	@ResponseBody
+	@ExceptionHandler(NotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	String NotFoundControllerAdvice(NotFoundException ex) {
+		return ex.getMessage();
+	}
 }

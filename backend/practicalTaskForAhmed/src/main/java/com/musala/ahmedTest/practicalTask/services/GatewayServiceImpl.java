@@ -2,10 +2,14 @@ package com.musala.ahmedTest.practicalTask.services;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.musala.ahmedTest.practicalTask.dtos.GatewayDTO;
+import com.musala.ahmedTest.practicalTask.dtos.PeripheralDeviceDTO;
 import com.musala.ahmedTest.practicalTask.exceptions.NotAllowedDataException;
 import com.musala.ahmedTest.practicalTask.exceptions.NotFoundException;
 import com.musala.ahmedTest.practicalTask.models.Gateway;
@@ -15,11 +19,9 @@ import com.musala.ahmedTest.practicalTask.repos.GatewayRepo;
 @Service
 public class GatewayServiceImpl implements IGatewayService {
 
-	private static final String GATEWAY_NOT_FOUND_MESSAGE = " Couldn't find a gateway with serial :";
-	private static final String MAXIMUM_ALLOWED_DEVICE_NUMBER_MESSAGE = " The Maximum Number of Peripheral Devices for each Gateway is 10 ";
-	private static final String DEVICE_NOT_FOUND_MESSAGE = " Couldn't find a Peripheral device with uid :";
-	private static final String INVALID_IP_MESSAGE = " Invalid IP V4 Address: ";
-	
+	@Autowired
+	ModelMapper modelMapper;
+
 	@Autowired
 	private GatewayRepo gatewayRepo;
 
@@ -34,25 +36,34 @@ public class GatewayServiceImpl implements IGatewayService {
 	}
 
 	@Override
-	public Gateway addNewGateway(Gateway gateway) throws NotAllowedDataException {
-		if (notValidIPV4Address(gateway.getIpAddress()))
-			throw new NotAllowedDataException(INVALID_IP_MESSAGE + gateway.getIpAddress());
-		if (null != gateway.getPeripheralDevices()) {
-			if (gateway.getPeripheralDevices().size() > 10)
-				throw new NotAllowedDataException(MAXIMUM_ALLOWED_DEVICE_NUMBER_MESSAGE);
+	public Gateway addGateway(GatewayDTO gatewayDTO) throws NotAllowedDataException {
 
-			for (PeripheralDevice peripheralDevice : gateway.getPeripheralDevices()) {
-				peripheralDevice.setGateway(gateway);
-			}
-			gateway.setPeripheralDevices(gateway.getPeripheralDevices());
-		}
+		Gateway gateway = modelMapper.map(gatewayDTO, Gateway.class);
+
+		Optional<Gateway> oldGatewayOptional = gatewayRepo.findById(gateway.getSerialNum());
+
+		// if there is an old gateway with this serial
+		if (oldGatewayOptional.isPresent())
+			throw new NotAllowedDataException(SERIAL_USED_BEFORE_MESSAGE + gateway.getSerialNum());
+
+//		if (null != gateway.getPeripheralDevices()) {
+//			if (gateway.getPeripheralDevices().size() > 10)
+//				throw new NotAllowedDataException(MAXIMUM_ALLOWED_DEVICE_NUMBER_MESSAGE);
+//
+//			for (PeripheralDevice peripheralDevice : gateway.getPeripheralDevices()) {
+//				peripheralDevice.setGateway(gateway);
+//			}
+//			gateway.setPeripheralDevices(gateway.getPeripheralDevices());
+//		}
 		return gatewayRepo.save(gateway);
 
 	}
 
 	@Override
-	public Gateway addNewDevice(PeripheralDevice newDevice, String serial)
+	public Gateway addDevice(PeripheralDeviceDTO peripheralDeviceDTO, String serial)
 			throws NotAllowedDataException, NotFoundException {
+		PeripheralDevice newDevice = modelMapper.map(peripheralDeviceDTO, PeripheralDevice.class);
+
 		var gateway = findById(serial);
 		if (gateway.getPeripheralDevices().size() == 10)
 			throw new NotAllowedDataException(MAXIMUM_ALLOWED_DEVICE_NUMBER_MESSAGE);
@@ -106,69 +117,24 @@ public class GatewayServiceImpl implements IGatewayService {
 
 	}
 
-	@Override
-	public Gateway replaceGateway(Gateway gateway, String serial) throws NotAllowedDataException {
+	public Gateway update(GatewayDTO gatewayDTO, String serial) throws NotAllowedDataException {
+		Gateway gateway = modelMapper.map(gatewayDTO, Gateway.class);
 
-		boolean isNewGatewayHasPeripheralDevices = false;
-
-		// check if the new gateway has a valid ip address
-		if (notValidIPV4Address(gateway.getIpAddress()))
-			throw new NotAllowedDataException(INVALID_IP_MESSAGE + gateway.getIpAddress());
-
-		// check if the new gateway has a Peripheral Devices
-		if (null != gateway.getPeripheralDevices()) {
-
-			if (gateway.getPeripheralDevices().size() > 10)
-				throw new NotAllowedDataException(MAXIMUM_ALLOWED_DEVICE_NUMBER_MESSAGE);
-
-			// set the flag newGatewayHasPeripheralDevices to true
-			isNewGatewayHasPeripheralDevices = true;
-		}
-		// check if there an old gateway with serial number {serial}
 		Gateway oldGateway = findById(serial);
+		// update the old gateway with the new gateway and new serial
+		oldGateway.setIpAddress(gateway.getIpAddress());
+		oldGateway.setName(gateway.getName());
+		oldGateway.setSerialNum(serial);
 
-		// if there is no old gateway with this serial
-		if (null == oldGateway) {
-			// add the new gateway with the new serial
-			gateway.setSerialNum(serial);
+		// if the new gateway has Peripheral Devices
+		if (gateway.getPeripheralDevices() != null && !gateway.getPeripheralDevices().isEmpty()) {
 
-			// if the new gateway has Peripheral Devices
-			if (isNewGatewayHasPeripheralDevices) {
-
-				// update the gateway in each Peripheral Device
-				for (PeripheralDevice peripheralDevice : gateway.getPeripheralDevices()) {
-					peripheralDevice.setGateway(gateway);
-				}
-
-				// set the PeripheralDevices in the gateway
-				gateway.setPeripheralDevices(gateway.getPeripheralDevices());
-			}
-
-			return gatewayRepo.save(gateway);
+			// update the gateway in each Peripheral Device
+			gateway.getPeripheralDevices().stream().forEach(peripheralDevice -> peripheralDevice.setGateway(gateway));
+			// set the PeripheralDevices in the gateway
+			oldGateway.setPeripheralDevices(gateway.getPeripheralDevices());
 		}
-
-		// if there are an old gateway (mean old gateway not null )
-		else {
-
-			// update the old gateway with the new gateway and new serial
-			oldGateway.setIpAddress(gateway.getIpAddress());
-			oldGateway.setName(gateway.getName());
-			oldGateway.setSerialNum(serial);
-
-			// if the new gateway has Peripheral Devices
-			if (isNewGatewayHasPeripheralDevices) {
-
-				// update the gateway in each Peripheral Device
-				for (PeripheralDevice peripheralDevice : gateway.getPeripheralDevices()) {
-					peripheralDevice.setGateway(oldGateway);
-				}
-
-				// set the PeripheralDevices in the gateway
-				oldGateway.setPeripheralDevices(gateway.getPeripheralDevices());
-			}
-			return gatewayRepo.save(oldGateway);
-
-		}
+		return gatewayRepo.save(oldGateway);
 
 	}
 

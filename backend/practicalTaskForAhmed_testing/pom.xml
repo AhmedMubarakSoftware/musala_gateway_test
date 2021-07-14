@@ -26,6 +26,8 @@
 			<groupId>com.musala.ahmedTest</groupId>
 			<artifactId>practicalTaskForAhmed</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+
 		</dependency>
 
 		<dependency>
@@ -97,7 +99,13 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+<<<<<<< HEAD
 					<mainClass>com.musala.ahmedTest.practicalTask.PracticalTaskForAhmedTestingApplication</mainClass>
+=======
+
+					<mainClass>com.musala.ahmedTest.practicalTask.PracticalTaskForAhmedTestingApplication</mainClass>
+
+>>>>>>> main1
 				</configuration>
 			</plugin>
 

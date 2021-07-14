@@ -49,7 +49,6 @@ public class PeripheralDevice {
 
 	// date created
 	@CreationTimestamp
-//	@CreatedDate
 	@Column(name = "CREATION_DATE" ,updatable = false)
 	private LocalDateTime creationDate;
 
